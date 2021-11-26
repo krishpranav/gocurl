@@ -1,7 +1,11 @@
 package curl
 
+import (
+	"log"
+)
+
 const (
-	_DEBUG = 10 + (iota + 1)
+	_DEBUG = 10 * (iota + 1)
 	_INFO
 	_WARN
 	_ERROR
@@ -24,4 +28,26 @@ func SetLogLevel(levelName string) {
 	case "DEFAULT_LOG_LEVEL":
 		log_level = _DEFAULT_LOG_LEVEL
 	}
+}
+
+func logf(limitLevel int, format string, args ...interface{}) {
+	if log_level <= limitLevel {
+		log.Printf(format, args...)
+	}
+}
+
+func debugf(format string, args ...interface{}) {
+	logf(_DEBUG, format, args...)
+}
+
+func infof(format string, args ...interface{}) {
+	logf(_INFO, format, args...)
+}
+
+func warnf(format string, args ...interface{}) {
+	logf(_WARN, format, args...)
+}
+
+func errorf(format string, args ...interface{}) {
+	logf(_ERROR, format, args...)
 }
