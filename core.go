@@ -17,6 +17,7 @@ func GlobalCleanup() {
 
 type VersionInfoData struct {
 	Age C.CURLversion
+
 	Version       string
 	VersionNum    uint
 	Host          string
@@ -25,9 +26,12 @@ type VersionInfoData struct {
 	SslVersionNum int
 	LibzVersion   string
 	Protocols     []string
+
 	Ares    string
 	AresNum int
+
 	Libidn string
+
 	IconvVerNum   int
 	LibsshVersion string
 }
@@ -49,6 +53,7 @@ func VersionInfo(ver C.CURLversion) *VersionInfoData {
 		ret.SslVersion = C.GoString(data.ssl_version)
 		ret.SslVersionNum = int(data.ssl_version_num)
 		ret.LibzVersion = C.GoString(data.libz_version)
+
 		ret.Protocols = []string{}
 		for i := C.int(0); C.string_array_index(data.protocols, i) != nil; i++ {
 			p := C.string_array_index(data.protocols, i)
@@ -68,7 +73,6 @@ func VersionInfo(ver C.CURLversion) *VersionInfoData {
 	}
 	return ret
 }
-
 
 func Getdate(date string) *time.Time {
 	datestr := C.CString(date)

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"mime"
 	"path"
-	"unsafe"
 	"sync"
+	"unsafe"
 )
 
 type CurlInfo C.CURLINFO
@@ -24,6 +24,7 @@ func FreeCurlString(s CurlString) {
 }
 
 func (e CurlError) Error() string {
+
 	ret := C.curl_easy_strerror(C.CURLcode(e))
 	return fmt.Sprintf("curl: %s", C.GoString(ret))
 }
@@ -74,7 +75,7 @@ func (c *contextMap) Delete(k uintptr) {
 	delete(c.items, k)
 }
 
-var context_map = &contextMap {
+var context_map = &contextMap{
 	items: make(map[uintptr]*CURL),
 }
 
@@ -220,6 +221,7 @@ func (curl *CURL) Setopt(opt int, param interface{}) error {
 				return newCurlError(C.curl_easy_setopt_slist(p, C.CURLoption(opt), nil))
 			}
 		default:
+
 			return newCurlError(C.curl_easy_setopt_pointer(p, C.CURLoption(opt),
 				unsafe.Pointer(&param)))
 		}

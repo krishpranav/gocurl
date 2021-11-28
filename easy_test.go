@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"sync"
 	"testing"
+	"sync"
 )
 
 func setupTestServer(serverContent string) *httptest.Server {

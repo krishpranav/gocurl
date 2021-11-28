@@ -3,26 +3,26 @@ package curl
 import "C"
 
 import (
-	"unsafe"
 	"syscall"
+	"unsafe"
 )
 
 type CurlMultiError C.CURLMcode
-type CurlMultiMsg	C.CURLMSG
+type CurlMultiMsg C.CURLMSG
 
-func (e CurlMultiError) Error() string {
+func (e CurlMultiError) Error() string 
 	ret := C.curl_multi_strerror(C.CURLMcode(e))
 	return C.GoString(ret)
 }
 
 func newCurlMultiError(errno C.CURLMcode) error {
-	if errno == 0 {
+	if errno == 0 { 
 		return nil
 	}
 	return CurlMultiError(errno)
 }
 
-func newCURLMessage(message *C.CURLMsg) (msg *CURLMessage){
+func newCURLMessage(message *C.CURLMsg) (msg *CURLMessage) {
 	if message == nil {
 		return nil
 	}
@@ -38,10 +38,11 @@ type CURLM struct {
 }
 
 var dummy unsafe.Pointer
+
 type CURLMessage struct {
-	Msg CurlMultiMsg
+	Msg         CurlMultiMsg
 	Easy_handle *CURL
-	Data [unsafe.Sizeof(dummy)]byte
+	Data        [unsafe.Sizeof(dummy)]byte
 }
 
 func MultiInit() *CURLM {
@@ -86,7 +87,6 @@ func (mcurl *CURLM) Setopt(opt int, param interface{}) error {
 		return newCurlMultiError(C.curl_multi_setopt_pointer(p, C.CURLMoption(opt), nil))
 	}
 	switch {
-
 	case opt >= C.CURLOPTTYPE_LONG:
 		val := C.long(0)
 		switch t := param.(type) {
